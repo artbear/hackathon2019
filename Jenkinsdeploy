@@ -46,7 +46,7 @@ pipeline {
             steps {
                 withCredentials([
                     usernamePassword(credentialsId: 'onec_deploy_test', usernameVariable: 'USR', passwordVariable: 'PWD')]) {
-                    bat "\"${v8exe}\" CONFIG ${v8basepath} /N$USR /P$PWD /UC${lockuccode} /LoadConfigFromFiles ${WORKSPACE}\\${projectname}\\src\\cf\\ /UpdateDBCfg"
+                    bat "\"${v8exe}\" CONFIG ${v8basepath} /N$USR /P$PWD /UC${lockuccode} /LoadConfigFromFiles ${WORKSPACE}\\${projectname}\\src\\cf\\"
                 }
             }
         }
