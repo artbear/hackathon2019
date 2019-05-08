@@ -1,0 +1,114 @@
+#!groovy
+def projectname         = 'metrics-exp'
+def clientlabel         = 'uat_prt'
+
+def v8server    = 'comp-1c-a.esb.rossko.local'
+def v8base      = projectname
+def v8basepath  = "/S" + v8server + "\\" + v8base
+
+def programmfiles       = "C:/Program Files"
+def programmfilesx86    = programmfiles + " (x86)"
+def v8version           = "8.3.10.2667"
+
+def v8exe = programmfilesx86 + "/1cv8/" + v8version + "/bin/1cv8.exe"
+def rac   = programmfiles    + "/1cv8/" + v8version + "/bin/rac.exe"
+
+def lockuccode          = UUID.randomUUID().toString()
+def developeremail      = 'sergey.novikov@rossko.ru'
+def recieveremail       = 'sergey.novikov@rossko.ru'
+
+def success_email   = String.format("<p>%s</p><p>%s<br>%s</p>"
+                        , "Обновление успешно завершено, доступ открыт"
+                        , "Тел. дежурного админа: +7-913-898-81-15"
+                        , "Тел. дежурного по 1С: +7-913-460-51-75")
+
+pipeline {
+    options{
+        disableConcurrentBuilds()
+        timestamps()
+    }
+    agent {
+        label {
+            label "${clientlabel}"
+        }
+    }
+    stages {
+        stage('Отключение конфигуратора') {
+            steps {
+                withCredentials([
+                    usernamePassword(credentialsId: 'onec_deploy', usernameVariable: 'USR', passwordVariable: 'PWD')]) {
+                    bat "chcp 1251 && deployka session kill -filter appid=Designer -ras ${v8server} -rac \"${rac}\" -db ${v8base} -db-user $USR -db-pwd $PWD -lockuccode ${lockuccode} -v8version ${v8version}"
+                }
+            }
+        }
+        stage('Загрузка конфигурации из исходников') {
+            steps {
+                withCredentials([
+                    usernamePassword(credentialsId: 'onec_deploy', usernameVariable: 'USR', passwordVariable: 'PWD')]) {
+                    bat "\"${v8exe}\" CONFIG ${v8basepath} /N$USR /P$PWD /UC${lockuccode} /LoadConfigFromFiles ${WORKSPACE}\\${projectname}\\src\\cf\\ /UpdateDBCfg"
+                }
+            }
+        }
+        stage('Запрет регзаданий') {
+            steps {
+                withCredentials([
+                    usernamePassword(credentialsId: 'onec_deploy', usernameVariable: 'USR', passwordVariable: 'PWD')]) {
+                    bat "chcp 1251 && deployka scheduledjobs lock -ras ${v8server} -rac \"${rac}\" -db ${v8base} -db-user $USR -db-pwd $PWD -v8version ${v8version}"
+                }
+            }
+        }
+        stage('Блокировка сеансов') {
+            steps {
+                withCredentials([
+                    usernamePassword(credentialsId: 'onec_deploy', usernameVariable: 'USR', passwordVariable: 'PWD')]) {
+                    bat "chcp 1251 && deployka session lock -ras ${v8server} -rac \"${rac}\" -db ${v8base} -db-user $USR -db-pwd $PWD -lockmessage \"Infobase update started. Please wait...\" -lockstartat 1 -lockuccode ${lockuccode} -v8version ${v8version}"
+                }
+            }
+        }
+        stage('Отключение сеансов') {
+            steps {
+                withCredentials([
+                    usernamePassword(credentialsId: 'onec_deploy', usernameVariable: 'USR', passwordVariable: 'PWD')]) {
+                    bat "chcp 1251 && deployka session kill -filter appid=1CV8C -ras ${v8server} -rac \"${rac}\" -db ${v8base} -db-user $USR -db-pwd $PWD -lockuccode ${lockuccode} -v8version ${v8version}"
+                }
+            }
+        }
+        stage('Обновление конфигурации') {
+            steps {
+                withCredentials([
+                    usernamePassword(credentialsId: 'onec_deploy', usernameVariable: 'USR', passwordVariable: 'PWD')]) {
+                    bat "chcp 1251 && deployka dbupdate ${v8basepath} -db-user $USR -db-pwd $PWD -uccode ${lockuccode}  -v8version ${v8version} -allow-warnings"
+                }
+            }
+        }
+        stage('Отключение блокировки') {
+            steps {
+                withCredentials([
+                    usernamePassword(credentialsId: 'onec_deploy', usernameVariable: 'USR', passwordVariable: 'PWD')]) {
+                    bat "chcp 1251 && deployka session unlock -ras ${v8server} -rac \"${rac}\" -db ${v8base} -db-user $USR -db-pwd $PWD  -v8version ${v8version}"
+                }
+            }
+        }
+        stage('Включение регзаданий') {
+            steps {
+                withCredentials([
+                    usernamePassword(credentialsId: 'onec_deploy', usernameVariable: 'USR', passwordVariable: 'PWD')]) {
+                    bat "chcp 1251 && deployka scheduledjobs unlock -ras ${v8server} -rac \"${rac}\" -db ${v8base} -db-user $USR -db-pwd $PWD -v8version ${v8version}"
+                }
+            }
+        }
+    }
+    post{
+        failure{
+            withCredentials([
+                usernamePassword(credentialsId: 'onec_deploy', usernameVariable: 'USR', passwordVariable: 'PWD')]) {
+                bat "chcp 1251 && deployka session unlock -ras ${v8server} -rac \"${rac}\" -db ${v8base} -db-user $USR -db-pwd $PWD  -v8version ${v8version}"
+                bat "chcp 1251 && deployka scheduledjobs unlock -ras ${v8server} -rac \"${rac}\" -db ${v8base} -db-user $USR -db-pwd $PWD -v8version ${v8version}"
+            }
+            emailext attachLog: true, body: 'Ошибки при обновлении', replyTo: developeremail, subject: 'Автоматическое обновление', to: developeremail
+        }
+        success{
+            emailext attachLog: false, body: success_email, replyTo: recieveremail, subject: 'Автоматическое обновление', to: recieveremail
+        }
+    }
+}
