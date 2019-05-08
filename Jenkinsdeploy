@@ -3,6 +3,7 @@ def projectname         = 'hackathon2019'
 def clientlabel         = '1c-dev-perf' //
 
 def v8server    = '1c-dev-perf:1741'
+def v8serverRas = '1c-dev-perf'
 def v8base      = projectname
 def v8basepath  = "/S" + v8server + "\\" + v8base
 
@@ -37,7 +38,7 @@ pipeline {
             steps {
                 withCredentials([
                     usernamePassword(credentialsId: 'onec_deploy_test', usernameVariable: 'USR', passwordVariable: 'PWD')]) {
-                    bat "chcp 1251 && deployka session kill -filter appid=Designer -ras ${v8server} -rac \"${rac}\" -db ${v8base} -db-user $USR -db-pwd $PWD -lockuccode ${lockuccode} -v8version ${v8version}"
+                    bat "chcp 1251 && deployka session kill -filter appid=Designer -ras ${v8serverRas} -rac \"${rac}\" -db ${v8base} -db-user $USR -db-pwd $PWD -lockuccode ${lockuccode} -v8version ${v8version}"
                 }
             }
         }
@@ -53,7 +54,7 @@ pipeline {
             steps {
                 withCredentials([
                     usernamePassword(credentialsId: 'onec_deploy_test', usernameVariable: 'USR', passwordVariable: 'PWD')]) {
-                    bat "chcp 1251 && deployka scheduledjobs lock -ras ${v8server} -rac \"${rac}\" -db ${v8base} -db-user $USR -db-pwd $PWD -v8version ${v8version}"
+                    bat "chcp 1251 && deployka scheduledjobs lock -ras ${v8serverRas} -rac \"${rac}\" -db ${v8base} -db-user $USR -db-pwd $PWD -v8version ${v8version}"
                 }
             }
         }
@@ -61,7 +62,7 @@ pipeline {
             steps {
                 withCredentials([
                     usernamePassword(credentialsId: 'onec_deploy_test', usernameVariable: 'USR', passwordVariable: 'PWD')]) {
-                    bat "chcp 1251 && deployka session lock -ras ${v8server} -rac \"${rac}\" -db ${v8base} -db-user $USR -db-pwd $PWD -lockmessage \"Infobase update started. Please wait...\" -lockstartat 1 -lockuccode ${lockuccode} -v8version ${v8version}"
+                    bat "chcp 1251 && deployka session lock -ras ${v8serverRas} -rac \"${rac}\" -db ${v8base} -db-user $USR -db-pwd $PWD -lockmessage \"Infobase update started. Please wait...\" -lockstartat 1 -lockuccode ${lockuccode} -v8version ${v8version}"
                 }
             }
         }
@@ -69,7 +70,7 @@ pipeline {
             steps {
                 withCredentials([
                     usernamePassword(credentialsId: 'onec_deploy_test', usernameVariable: 'USR', passwordVariable: 'PWD')]) {
-                    bat "chcp 1251 && deployka session kill -filter appid=1CV8C -ras ${v8server} -rac \"${rac}\" -db ${v8base} -db-user $USR -db-pwd $PWD -lockuccode ${lockuccode} -v8version ${v8version}"
+                    bat "chcp 1251 && deployka session kill -filter appid=1CV8C -ras ${v8serverRas} -rac \"${rac}\" -db ${v8base} -db-user $USR -db-pwd $PWD -lockuccode ${lockuccode} -v8version ${v8version}"
                 }
             }
         }
@@ -85,7 +86,7 @@ pipeline {
             steps {
                 withCredentials([
                     usernamePassword(credentialsId: 'onec_deploy_test', usernameVariable: 'USR', passwordVariable: 'PWD')]) {
-                    bat "chcp 1251 && deployka session unlock -ras ${v8server} -rac \"${rac}\" -db ${v8base} -db-user $USR -db-pwd $PWD  -v8version ${v8version}"
+                    bat "chcp 1251 && deployka session unlock -ras ${v8serverRas} -rac \"${rac}\" -db ${v8base} -db-user $USR -db-pwd $PWD  -v8version ${v8version}"
                 }
             }
         }
@@ -93,7 +94,7 @@ pipeline {
             steps {
                 withCredentials([
                     usernamePassword(credentialsId: 'onec_deploy_test', usernameVariable: 'USR', passwordVariable: 'PWD')]) {
-                    bat "chcp 1251 && deployka scheduledjobs unlock -ras ${v8server} -rac \"${rac}\" -db ${v8base} -db-user $USR -db-pwd $PWD -v8version ${v8version}"
+                    bat "chcp 1251 && deployka scheduledjobs unlock -ras ${v8serverRas} -rac \"${rac}\" -db ${v8base} -db-user $USR -db-pwd $PWD -v8version ${v8version}"
                 }
             }
         }
@@ -102,8 +103,8 @@ pipeline {
         failure{
             withCredentials([
                 usernamePassword(credentialsId: 'onec_deploy_test', usernameVariable: 'USR', passwordVariable: 'PWD')]) {
-                bat "chcp 1251 && deployka session unlock -ras ${v8server} -rac \"${rac}\" -db ${v8base} -db-user $USR -db-pwd $PWD  -v8version ${v8version}"
-                bat "chcp 1251 && deployka scheduledjobs unlock -ras ${v8server} -rac \"${rac}\" -db ${v8base} -db-user $USR -db-pwd $PWD -v8version ${v8version}"
+                bat "chcp 1251 && deployka session unlock -ras ${v8serverRas} -rac \"${rac}\" -db ${v8base} -db-user $USR -db-pwd $PWD  -v8version ${v8version}"
+                bat "chcp 1251 && deployka scheduledjobs unlock -ras ${v8serverRas} -rac \"${rac}\" -db ${v8base} -db-user $USR -db-pwd $PWD -v8version ${v8version}"
             }
             emailext attachLog: true, body: 'Ошибки при обновлении', replyTo: developeremail, subject: 'Автоматическое обновление', to: developeremail
         }
