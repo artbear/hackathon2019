@@ -5,9 +5,9 @@
 			<Metadata name="Catalog.ТестовыйСправочник.Attribute.Реквизит1" id="ddd3d672-5643-4120-b570-1a7c4e5888cd"/>
 		</Metadata>
 		<Metadata name="Catalog.ТестовыйСправочник.ObjectModule" id="d4afd648-90f5-4594-992e-0005b3603445.0" configVersion="b86d4f8085c6ec4db6cf6bc9cdbfe7f500000000"/>
-		<Metadata name="Configuration.Хакатон2019" id="1d5a4942-00a6-4527-a50f-e6333ef7e0e1" configVersion="a440a78684442841b2b9a7d1f2c8d72e00000000"/>
+		<Metadata name="Configuration.Хакатон2019" id="1d5a4942-00a6-4527-a50f-e6333ef7e0e1" configVersion="d685f2569ae63e4c955f4a6271170cef00000000"/>
 		<Metadata name="Language.Русский" id="42df1817-37fb-4d95-9453-bc4fef2c9efe" configVersion="8a2b922aa2d1514493d56a3ddfdb14d600000000"/>
-		<Metadata name="Role.ПолныеПрава" id="794205c7-a68e-4330-93ff-884ccf7a3af7" configVersion="877014a143bfaf4a894437113498c4a800000000"/>
+		<Metadata name="Role.ПолныеПрава" id="794205c7-a68e-4330-93ff-884ccf7a3af7" configVersion="80e4b750c3558347b8d13656fd31eee300000000"/>
 		<Metadata name="Role.ПолныеПрава.Rights" id="794205c7-a68e-4330-93ff-884ccf7a3af7.0" configVersion="fc5142870010a44ea625ae059ca056f400000000"/>
 	</ConfigVersions>
 </ConfigDumpInfo>
