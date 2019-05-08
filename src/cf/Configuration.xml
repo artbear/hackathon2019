@@ -138,6 +138,7 @@
 		</Properties>
 		<ChildObjects>
 			<Language>Русский</Language>
+			<Role>ПолныеПрава</Role>
 			<Catalog>ТестовыйСправочник</Catalog>
 		</ChildObjects>
 	</Configuration>
