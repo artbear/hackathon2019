@@ -32,7 +32,7 @@ pipeline {
        // label {
        //     label "${clientlabel}"
        // }
-   / }
+   // }
     stages {
         stage('Отключение конфигуратора') {
             steps {
