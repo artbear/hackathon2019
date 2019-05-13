@@ -50,7 +50,7 @@ services:
     image: 'bitnami/jenkins:2'
     ports:
       - '8080:8080'
-      - '8088:8088'
+      - '9088:9088'
       - '443:8443'
       - '50000:50000'
     volumes:
