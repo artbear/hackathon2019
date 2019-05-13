@@ -35,6 +35,8 @@ services:
 
   db:
     image: silverbulleters/ya-docker-postgresql-1c:10.6
+    ports:
+      - 5432:5432
     networks:
       - onec-net
     environment:  
