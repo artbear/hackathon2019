@@ -28,11 +28,11 @@ pipeline {
         disableConcurrentBuilds()
         timestamps()
     }
-    //agent {
+    agent {
        // label {
        //     label "${clientlabel}"
        // }
-   // }
+    }
     stages {
         stage('Отключение конфигуратора') {
             steps {
