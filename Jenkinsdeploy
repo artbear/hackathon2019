@@ -1,6 +1,6 @@
 #!groovy
 def projectname         = 'hackathon2019'
-def clientlabel         = '1c-dev-perf' //
+def clientlabel         = 'master' //
 
 def v8server    = '1c-dev-perf:1741'
 def v8serverRas = '1c-dev-perf'
@@ -29,9 +29,9 @@ pipeline {
         timestamps()
     }
     agent {
-       // label {
-       //     label "${clientlabel}"
-       // }
+        label {
+            label "${clientlabel}"
+        }
     }
     stages {
         stage('Отключение конфигуратора') {
