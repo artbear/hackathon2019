@@ -1,15 +1,15 @@
 #!groovy
 def projectname         = 'hackathon2019'
-def clientlabel         = 'master' //
+def clientlabel         = 'autodeploy' //
 
-def v8server    = '1c-dev-perf:1741'
-def v8serverRas = '1c-dev-perf'
+def v8server    = 'centosDocker'
+def v8serverRas = 'centosDocker'
 def v8base      = projectname
 def v8basepath  = "/S" + v8server + "\\" + v8base
 
 def programmfiles       = "C:/Program Files"
 def programmfilesx86    = programmfiles + " (x86)"
-def v8version           = "8.3.14.1565"
+def v8version           = "8.3.14.1630"
 
 def v8exe = programmfilesx86 + "/1cv8/" + v8version + "/bin/1cv8.exe"
 def rac   = programmfiles    + "/1cv8/" + v8version + "/bin/rac.exe"
