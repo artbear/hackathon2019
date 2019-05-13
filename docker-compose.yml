@@ -41,16 +41,16 @@ services:
       - POWA_DATABASE=powa
       - PG_MAX_CONNECTION=100
       - PG_TIMEZONE=Europe/Moscow
-      - PG_PASSWORD=postgres  
+      - PG_PASSWORD=postgres
   jenkins:
-    image: jenkins:latest
+    image: 'bitnami/jenkins:2'
     ports:
-      - 8080:8080
-      - 50000:50000    
-    privileged: true
-    volumes:        
-        - /var/wisestep/data/jenkins_home:/var/jenkins_home        
-        - /var/run/docker.sock:/var/run/docker.sock
-        - /usr/bin/docker:/usr/bin/docker
+      - '8080:8080'
+      - '443:8443'
+      - '50000:50000'
+    volumes:
+      - 'jenkins_data:/bitnami'
+    networks:
+      - onec-net
 networks:
   onec-net:
