@@ -53,6 +53,8 @@ services:
       - '9088:9088'
       - '443:8443'
       - '50000:50000'
+    environment:
+      - JAVA_OPTS=-Dfile.encoding=UTF-8
     volumes:
       - 'jenkins_data:/bitnami'
     networks:
