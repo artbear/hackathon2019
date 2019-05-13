@@ -7,8 +7,6 @@ services:
     # hostname: dockerhost
     command:
       "/opt/1C/v8.3/x86_64/ragent -d /srvinfo"
-    ports:
-      - 1541:1541
     networks:
       - onec-net
 
