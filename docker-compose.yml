@@ -54,3 +54,6 @@ services:
       - onec-net
 networks:
   onec-net:
+volumes:
+  jenkins_data:
+    driver: local  
