@@ -1,6 +1,6 @@
 #!groovy
 def projectname         = 'hackathon2019'
-def clientlabel         = 'autodeploy' //
+def clientlabel         = 'autodeploy1' //
 
 def v8server    = 'centosDocker'
 def v8serverRas = 'centosDocker'
