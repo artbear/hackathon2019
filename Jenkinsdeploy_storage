@@ -7,7 +7,7 @@ def v8serverRas = 'centosDocker'
 def v8base      = projectname
 def v8basepath  = "/S" + v8server + "\\" + v8base
 
-def storagepath           = "S:\\1CRepository\\release."+reponame+"\\"
+def storagepath           = "c:\\work\\hackathon2019\\storage\\"
 
 def programmfiles       = "C:/Program Files"
 def programmfilesx86    = programmfiles + " (x86)"
