@@ -6,7 +6,7 @@ services:
     # Для "прямого" доступа устанавливаем равным имени докерхоста
     hostname: centosDocker
     command:
-      bash -c "echo \"192.168.1.118 centosDocker\" >> /etc/hosts && cat /etc/hosts && /opt/1C/v8.3/x86_64/ragent -d /srvinfo"
+      bash -c "echo \"10.10.2.15 centosDocker\" >> /etc/hosts && cat /etc/hosts && /opt/1C/v8.3/x86_64/ragent -d /srvinfo"
     ports:
       - 1540:1540
       - 1541:1541
