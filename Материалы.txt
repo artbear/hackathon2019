@@ -1,0 +1,3 @@
+https://github.com/KeynihAV/hackathon2019
+Деплойка и оскрипт нужны для дженкинс слейва. (http://oscript.io/docs/page/install opm install deployka)
+Пример запуска: docker-compose -f docker-compose.yml up -d
