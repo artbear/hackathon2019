@@ -1,3 +1,4 @@
 https://github.com/KeynihAV/hackathon2019
 Деплойка и оскрипт нужны для дженкинс слейва. (http://oscript.io/docs/page/install opm install deployka)
 Пример запуска: docker-compose -f docker-compose.yml up -d
+deployka scheduledjobs lock -ras centosDocker -rac "C:/Program Files/1cv8/8.3.14.1630/bin/rac.exe" -db hackathon2019 -db-user autodeploy -db-pwd 123456
